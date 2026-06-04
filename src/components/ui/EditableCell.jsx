@@ -42,7 +42,7 @@ export default function EditableCell({ value, onChange, type = 'text', className
     return (
       <input
         ref={inputRef}
-        type={type === 'number' ? 'text' : 'text'}
+        type="text"
         value={raw}
         onChange={e => setRaw(e.target.value)}
         onBlur={commit}

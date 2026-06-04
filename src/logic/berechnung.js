@@ -42,25 +42,21 @@ export function berechne(state) {
   const ergebnis = produkteZeilen.map(p => ({ ...p, kosten: 0, steuern: 0 }))
 
   const alleZeilen = [
-    // Produkte → FOB in PYG, Exento
     ...produkteZeilen.map(p => ({
       betrag: (p.betrag || 0) * (p.menge || 0) * wk1,
       impuesto: 'Exento',
       aufteilung: 'Wert',
     })),
-    // Flete & Seguro → PYG, Exento
     ...(flete.zeilen || []).map(z => ({
       betrag: (z.betrag || 0) * wk2,
       impuesto: 'Exento',
       aufteilung: z.aufteilung || 'Wert',
     })),
-    // Importación → bereits PYG
     ...(importacion.zeilen || []).map(z => ({
       betrag: z.betrag || 0,
       impuesto: z.impuesto || 'Exento',
       aufteilung: z.aufteilung || 'Wert',
     })),
-    // Nationale → bereits PYG
     ...(nationale.zeilen || []).map(z => ({
       betrag: z.betrag || 0,
       impuesto: z.impuesto || 'Exento',

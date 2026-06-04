@@ -1,36 +1,14 @@
 @import "tailwindcss";
 
-* {
-  box-sizing: border-box;
-}
-
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
 body {
-  margin: 0;
-  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
-  background: #f8fafc;
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: #f1f5f9;
+  -webkit-font-smoothing: antialiased;
 }
-
-#root {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-}
-
-input[type="text"],
-input[type="number"] {
-  outline: none;
-}
-
+#root { width: 100%; min-height: 100vh; display: flex; }
 input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-input[type="number"] {
-  -moz-appearance: textfield;
-}
-
-select {
-  outline: none;
-}
+input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+input[type="number"] { -moz-appearance: textfield; }
+select { outline: none; }

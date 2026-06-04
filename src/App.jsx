@@ -8,30 +8,26 @@ export default function App() {
   const t = useT(kalk.sprache)
 
   const handlers = {
-    // produkte
     setProduktWaehrung:     kalk.setProduktWaehrung,
     setProduktWechselkurs:  kalk.setProduktWechselkurs,
     updateProduktZeile:     kalk.updateProduktZeile,
     addProduktZeile:        kalk.addProduktZeile,
     removeProduktZeile:     kalk.removeProduktZeile,
-    // flete
     setFleteWaehrung:       kalk.setFleteWaehrung,
     setFleteWechselkurs:    kalk.setFleteWechselkurs,
     updateFleteZeile:       kalk.updateFleteZeile,
     addFleteZeile:          kalk.addFleteZeile,
     removeFleteZeile:       kalk.removeFleteZeile,
-    // importacion
     updateImportacionZeile: kalk.updateImportacionZeile,
     addImportacionZeile:    kalk.addImportacionZeile,
     removeImportacionZeile: kalk.removeImportacionZeile,
-    // nationale
     updateNationaleZeile:   kalk.updateNationaleZeile,
     addNationaleZeile:      kalk.addNationaleZeile,
     removeNationaleZeile:   kalk.removeNationaleZeile,
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar
         verlauf={kalk.verlauf}
         aktivId={kalk.aktivId}
@@ -43,11 +39,7 @@ export default function App() {
         onLoeschen={kalk.loeschen}
         onSprache={kalk.setSprache}
       />
-      <MainArea
-        kalk={kalk.aktiveKalk}
-        t={t}
-        handlers={handlers}
-      />
+      <MainArea kalk={kalk.aktiveKalk} t={t} handlers={handlers} />
     </div>
   )
 }
