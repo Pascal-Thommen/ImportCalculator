@@ -3,6 +3,7 @@ import FleteSeguroTabelle from '../tables/FleteSeguroTabelle.jsx'
 import ImportacionTabelle from '../tables/ImportacionTabelle.jsx'
 import NationaleKostenTabelle from '../tables/NationaleKostenTabelle.jsx'
 import Ergebnistabelle from '../tables/Ergebnistabelle.jsx'
+import HinweisePanel from '../ui/HinweisePanel.jsx'
 
 export default function MainArea({ kalk, t, handlers }) {
   if (!kalk) return (
@@ -29,6 +30,7 @@ export default function MainArea({ kalk, t, handlers }) {
       {/* Content */}
       <div className="flex-1 px-8 py-6 space-y-5">
         <ProdukteTabelle       kalk={kalk} t={t} handlers={handlers} />
+        <HinweisePanel         kalk={kalk} t={t} />
         <FleteSeguroTabelle    kalk={kalk} t={t} handlers={handlers} />
         <ImportacionTabelle    kalk={kalk} t={t} handlers={handlers} />
         <NationaleKostenTabelle kalk={kalk} t={t} handlers={handlers} />

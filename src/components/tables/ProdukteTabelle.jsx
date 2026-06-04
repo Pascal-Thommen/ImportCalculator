@@ -15,6 +15,7 @@ export default function ProdukteTabelle({ kalk, t, handlers }) {
   const zeilen = produkte.zeilen || []
   const mehrere = zeilen.length > 1
   const { fobPYG, fobW1 } = berechneZwischen(kalk)
+  const herkunftDetails = HERKUNFT_OPTIONEN.find(h => h.key === herkunft) ?? null
 
   return (
     <section className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
@@ -100,20 +101,28 @@ export default function ProdukteTabelle({ kalk, t, handlers }) {
                   <EditableCell value={z.gewicht ?? 0} onChange={v => updateProduktZeile(z.id,'gewicht',v)} type="number" />
                 </td>
                 <td className="px-4 py-1.5">
-                  <EditableCell
-                    value={z.hsCode || ''}
-                    onChange={v => setProduktHsCode(z.id, v)}
-                    align="left"
-                    placeholder="8471…"
-                    className={!z.hsCodeManual ? 'text-slate-400' : ''}
-                  />
+                  <div className="flex items-center gap-1">
+                    <EditableCell
+                      value={z.hsCode || ''}
+                      onChange={v => setProduktHsCode(z.id, v)}
+                      align="left"
+                      placeholder="8471…"
+                      className={!z.hsCodeManual ? 'text-slate-400' : ''}
+                    />
+                    {hsInfo && hsInfo.isc > 0 && (
+                      <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-600 text-[9px] font-bold flex items-center justify-center" title={`ISC ${hsInfo.isc}%`}>ISC</span>
+                    )}
+                    {hsInfo && !herkunftDetails?.mercosur && hsInfo.zollsatz >= 30 && (
+                      <span className="flex-shrink-0 w-4 h-4 rounded-full bg-red-100 text-red-600 text-[9px] font-bold flex items-center justify-center" title={`Zoll ${hsInfo.zollsatz}%`}>!</span>
+                    )}
+                    {z.hsCode && !hsInfo && (
+                      <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-500 text-[9px] font-bold flex items-center justify-center" title="HS-Code nicht in Datenbank">?</span>
+                    )}
+                  </div>
                   {hsInfo && (
                     <div className="text-xs text-slate-400 italic px-1 leading-tight mt-0.5 truncate max-w-[148px]" title={hsInfo.beschreibung}>
                       {hsInfo.beschreibung}
                     </div>
-                  )}
-                  {z.hsCode && !hsInfo && (
-                    <div className="text-xs text-amber-400 px-1 leading-tight mt-0.5">?</div>
                   )}
                 </td>
                 {mehrere && (
