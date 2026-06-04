@@ -27,7 +27,7 @@ export default function App() {
   }
 
   return (
-    <div className="flex h-screen overflow-hidden">
+    <div className="flex w-full h-screen overflow-hidden">
       <Sidebar
         verlauf={kalk.verlauf}
         aktivId={kalk.aktivId}
@@ -39,11 +39,7 @@ export default function App() {
         onLoeschen={kalk.loeschen}
         onSprache={kalk.setSprache}
       />
-      <MainArea
-        kalk={kalk.aktiveKalk}
-        t={t}
-        handlers={handlers}
-      />
+      <MainArea kalk={kalk.aktiveKalk} t={t} handlers={handlers} />
     </div>
   )
 }
