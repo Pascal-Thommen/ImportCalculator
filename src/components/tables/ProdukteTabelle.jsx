@@ -1,17 +1,33 @@
+import { useState, useCallback } from 'react'
 import EditableCell from '../ui/EditableCell.jsx'
 import SummaryField from '../ui/SummaryField.jsx'
 import HinweisePanel from '../ui/HinweisePanel.jsx'
 import { berechneZwischen } from '../../logic/berechnung.js'
 import { lookupHs } from '../../data/hsDatenbank.js'
 import { HERKUNFT_OPTIONEN } from '../../data/herkunftDaten.js'
+import { suggestHsCode } from '../../services/ollamaService.js'
 
 export default function ProdukteTabelle({ kalk, t, handlers }) {
   const {
     setHerkunft, schätzen,
     setProduktWaehrung, setProduktWechselkurs,
-    updateProduktZeile, setProduktHsCode,
+    updateProduktZeile, setProduktHsCode, setHsCodeVorschlag,
     addProduktZeile, removeProduktZeile,
   } = handlers
+
+  const [loadingHs, setLoadingHs] = useState(new Set())
+
+  const handleNameCommit = useCallback(async (rowId, name, isManual, existingCode) => {
+    if (!name?.trim()) return
+    if (isManual && existingCode) return  // user already typed a code manually
+    setLoadingHs(prev => new Set([...prev, rowId]))
+    try {
+      const code = await suggestHsCode(name)
+      if (code) setHsCodeVorschlag(rowId, code)
+    } finally {
+      setLoadingHs(prev => { const s = new Set(prev); s.delete(rowId); return s })
+    }
+  }, [setHsCodeVorschlag])
   const { produkte, herkunft = '' } = kalk
   const zeilen = produkte.zeilen || []
   const mehrere = zeilen.length > 1
@@ -90,7 +106,13 @@ export default function ProdukteTabelle({ kalk, t, handlers }) {
             return (
               <tr key={z.id} className="group hover:bg-blue-50/20 transition-colors">
                 <td className="px-4 py-1.5">
-                  <EditableCell value={z.name} onChange={v => updateProduktZeile(z.id,'name',v)} align="left" placeholder="Producto..." />
+                  <EditableCell
+                    value={z.name}
+                    onChange={v => updateProduktZeile(z.id,'name',v)}
+                    onAfterChange={v => handleNameCommit(z.id, v, z.hsCodeManual, z.hsCode)}
+                    align="left"
+                    placeholder="Producto..."
+                  />
                 </td>
                 <td className="px-4 py-1.5">
                   <EditableCell value={z.betrag} onChange={v => updateProduktZeile(z.id,'betrag',v)} type="number" />
@@ -103,20 +125,25 @@ export default function ProdukteTabelle({ kalk, t, handlers }) {
                 </td>
                 <td className="px-4 py-1.5">
                   <div className="flex items-center gap-1">
-                    <EditableCell
-                      value={z.hsCode || ''}
-                      onChange={v => setProduktHsCode(z.id, v)}
-                      align="left"
-                      placeholder="8471…"
-                      className={!z.hsCodeManual ? 'text-slate-400' : ''}
-                    />
-                    {hsInfo && hsInfo.isc > 0 && (
+                    <div className="flex-1">
+                      <EditableCell
+                        value={z.hsCode || ''}
+                        onChange={v => setProduktHsCode(z.id, v)}
+                        align="left"
+                        placeholder={loadingHs.has(z.id) ? '…' : '8471…'}
+                        className={z.hsCode && !z.hsCodeManual ? 'text-slate-400 italic' : ''}
+                      />
+                    </div>
+                    {loadingHs.has(z.id) && (
+                      <div className="w-3 h-3 border border-blue-200 border-t-blue-500 rounded-full animate-spin flex-shrink-0" />
+                    )}
+                    {!loadingHs.has(z.id) && hsInfo && hsInfo.isc > 0 && (
                       <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-600 text-[9px] font-bold flex items-center justify-center" title={`ISC ${hsInfo.isc}%`}>ISC</span>
                     )}
-                    {hsInfo && !herkunftDetails?.mercosur && hsInfo.zollsatz >= 30 && (
+                    {!loadingHs.has(z.id) && hsInfo && !herkunftDetails?.mercosur && hsInfo.zollsatz >= 30 && (
                       <span className="flex-shrink-0 w-4 h-4 rounded-full bg-red-100 text-red-600 text-[9px] font-bold flex items-center justify-center" title={`Zoll ${hsInfo.zollsatz}%`}>!</span>
                     )}
-                    {z.hsCode && !hsInfo && (
+                    {!loadingHs.has(z.id) && z.hsCode && !hsInfo && (
                       <span className="flex-shrink-0 w-4 h-4 rounded-full bg-amber-100 text-amber-500 text-[9px] font-bold flex items-center justify-center" title="HS-Code nicht in Datenbank">?</span>
                     )}
                   </div>

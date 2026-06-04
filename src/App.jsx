@@ -14,6 +14,7 @@ export default function App() {
     setProduktWechselkurs:  kalk.setProduktWechselkurs,
     updateProduktZeile:     kalk.updateProduktZeile,
     setProduktHsCode:       kalk.setProduktHsCode,
+    setHsCodeVorschlag:     kalk.setHsCodeVorschlag,
     addProduktZeile:        kalk.addProduktZeile,
     removeProduktZeile:     kalk.removeProduktZeile,
     setFleteWaehrung:       kalk.setFleteWaehrung,

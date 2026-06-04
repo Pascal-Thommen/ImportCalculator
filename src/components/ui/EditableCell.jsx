@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react'
 
-export default function EditableCell({ value, onChange, type = 'text', className = '', align = 'right', placeholder = '' }) {
+export default function EditableCell({ value, onChange, onAfterChange, type = 'text', className = '', align = 'right', placeholder = '' }) {
   const [editing, setEditing] = useState(false)
   const [raw, setRaw] = useState('')
   const inputRef = useRef(null)
@@ -22,12 +22,15 @@ export default function EditableCell({ value, onChange, type = 'text', className
   }
 
   const commit = () => {
+    let newVal
     if (type === 'number') {
       const parsed = parseFloat(raw.replace(/[^\d.-]/g, ''))
-      onChange(isNaN(parsed) ? 0 : parsed)
+      newVal = isNaN(parsed) ? 0 : parsed
     } else {
-      onChange(raw)
+      newVal = raw
     }
+    onChange(newVal)
+    onAfterChange?.(newVal)
     setEditing(false)
   }
 

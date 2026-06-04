@@ -119,6 +119,12 @@ export function useKalkulation() {
         z.id === id ? { ...z, hsCode: code, hsCodeManual: true } : z
       )}
     })),
+    // AI suggestion — only applies if user hasn't manually entered a code since
+    setHsCodeVorschlag: (id, code) => updateAktive(k => ({
+      ...k, produkte: { ...k.produkte, zeilen: k.produkte.zeilen.map(z =>
+        z.id === id && !z.hsCodeManual ? { ...z, hsCode: code, hsCodeManual: false } : z
+      )}
+    })),
     addProduktZeile:  () => add('produkte', { id: uuid(), name: `Producto ${(aktiveKalk?.produkte.zeilen.length||0)+1}`, betrag: 0, menge: 0, maseinheit: 0, gewicht: 0, hsCode: '', hsCodeManual: false }),
     removeProduktZeile: (id) => del('produkte', id),
 
