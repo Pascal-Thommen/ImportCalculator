@@ -48,7 +48,7 @@ export default function Ergebnistabelle({ kalk, t }) {
             <td className="px-4 py-4" />
             <td className="px-4 py-4 text-right font-mono font-semibold text-slate-500">{fmt(totalKosten)}</td>
             <td className="px-4 py-4 text-right font-mono font-semibold text-slate-500">{fmt(totalSteuern)}</td>
-            <td className="px-4 py-4 text-right font-mono font-extrabold text-blue-700 text-2xl">{fmt(totalTotal)}</td>
+            <td className="px-4 py-4 text-right font-mono font-extrabold text-blue-700 text-base">{fmt(totalTotal)}</td>
             <td className="px-6 py-4" />
           </tr>
         </tfoot>
