@@ -41,6 +41,12 @@ export const translations = {
     importkosten: 'Importkosten',
     nationale_kosten: 'Nationale Kosten',
     gesamt: 'Gesamt',
+    gewicht_kg: 'Gewicht (kg)',
+    hs_code: 'HS-Code',
+    herkunft: 'Herkunft',
+    schaetzen: '≈ Schätzen',
+    schaetzen_tooltip: 'Alle hellgrauen Felder mit Schätzwerten füllen',
+    geschaetzt: 'geschätzt',
   },
   ES: {
     app_titel: 'Calculadora de Costos de Importación',
@@ -84,6 +90,12 @@ export const translations = {
     importkosten: 'Costos de Importación',
     nationale_kosten: 'Costos Nacionales',
     gesamt: 'Total General',
+    gewicht_kg: 'Peso (kg)',
+    hs_code: 'Código HS',
+    herkunft: 'Origen',
+    schaetzen: '≈ Estimar',
+    schaetzen_tooltip: 'Rellenar todos los campos grises con valores estimados',
+    geschaetzt: 'estimado',
   },
   EN: {
     app_titel: 'Import Cost Calculator',
@@ -127,6 +139,12 @@ export const translations = {
     importkosten: 'Import Costs',
     nationale_kosten: 'National Costs',
     gesamt: 'Grand Total',
+    gewicht_kg: 'Weight (kg)',
+    hs_code: 'HS Code',
+    herkunft: 'Origin',
+    schaetzen: '≈ Estimate',
+    schaetzen_tooltip: 'Fill all light-grey fields with estimated values',
+    geschaetzt: 'estimated',
   },
 }
 

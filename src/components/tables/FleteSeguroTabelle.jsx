@@ -49,9 +49,21 @@ export default function FleteSeguroTabelle({ kalk, t, handlers }) {
         </thead>
         <tbody className="divide-y divide-slate-50">
           {zeilen.map(z => (
-            <tr key={z.id} className="group hover:bg-emerald-50/20 transition-colors">
-              <td className="px-4 py-1.5"><EditableCell value={z.beschreibung} onChange={v => updateFleteZeile(z.id,'beschreibung',v)} align="left" /></td>
-              <td className="px-4 py-1.5"><EditableCell value={z.betrag} onChange={v => updateFleteZeile(z.id,'betrag',v)} type="number" /></td>
+            <tr key={z.id} className={`group transition-colors ${z._auto === true ? 'bg-slate-50/60 hover:bg-emerald-50/30' : 'hover:bg-emerald-50/20'}`}>
+              <td className="px-4 py-1.5">
+                <div className="flex items-center gap-1.5">
+                  {z._auto === true && <span className="text-slate-300 text-xs select-none" title={t.geschaetzt}>≈</span>}
+                  <EditableCell value={z.beschreibung} onChange={v => updateFleteZeile(z.id,'beschreibung',v)} align="left" />
+                </div>
+              </td>
+              <td className="px-4 py-1.5">
+                <EditableCell
+                  value={z.betrag}
+                  onChange={v => updateFleteZeile(z.id,'betrag',v)}
+                  type="number"
+                  className={z._auto === true ? 'text-slate-400 italic' : ''}
+                />
+              </td>
               {mehrere && <td className="px-4 py-1.5"><DropdownCell value={z.aufteilung} options={aufteilungOptions} onChange={v => updateFleteZeile(z.id,'aufteilung',v)} /></td>}
               <td className="px-2">
                 <button onClick={() => removeFleteZeile(z.id)}

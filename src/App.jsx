@@ -8,9 +8,12 @@ export default function App() {
   const t = useT(kalk.sprache)
 
   const handlers = {
+    setHerkunft:            kalk.setHerkunft,
+    schätzen:               kalk.schätzen,
     setProduktWaehrung:     kalk.setProduktWaehrung,
     setProduktWechselkurs:  kalk.setProduktWechselkurs,
     updateProduktZeile:     kalk.updateProduktZeile,
+    setProduktHsCode:       kalk.setProduktHsCode,
     addProduktZeile:        kalk.addProduktZeile,
     removeProduktZeile:     kalk.removeProduktZeile,
     setFleteWaehrung:       kalk.setFleteWaehrung,

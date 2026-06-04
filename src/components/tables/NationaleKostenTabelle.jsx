@@ -49,10 +49,23 @@ export default function NationaleKostenTabelle({ kalk, t, handlers }) {
         <tbody className="divide-y divide-slate-50">
           {zeilen.map(z => {
             const { kosten, steuern } = splitBetrag(z.betrag||0, z.impuesto||'Exento')
+            const isAuto = z._auto === true
             return (
-              <tr key={z.id} className="group hover:bg-violet-50/20 transition-colors">
-                <td className="px-4 py-1.5"><EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id,'beschreibung',v)} align="left" /></td>
-                <td className="px-4 py-1.5"><EditableCell value={z.betrag} onChange={v => updateNationaleZeile(z.id,'betrag',v)} type="number" /></td>
+              <tr key={z.id} className={`group transition-colors ${isAuto ? 'bg-slate-50/60 hover:bg-violet-50/30' : 'hover:bg-violet-50/20'}`}>
+                <td className="px-4 py-1.5">
+                  <div className="flex items-center gap-1.5">
+                    {isAuto && <span className="text-slate-300 text-xs select-none" title={t.geschaetzt}>≈</span>}
+                    <EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id,'beschreibung',v)} align="left" />
+                  </div>
+                </td>
+                <td className="px-4 py-1.5">
+                  <EditableCell
+                    value={z.betrag}
+                    onChange={v => updateNationaleZeile(z.id,'betrag',v)}
+                    type="number"
+                    className={isAuto ? 'text-slate-400 italic' : ''}
+                  />
+                </td>
                 {mehrere && <td className="px-4 py-1.5"><DropdownCell value={z.aufteilung} options={aufteilungOptions} onChange={v => updateNationaleZeile(z.id,'aufteilung',v)} /></td>}
                 <td className="px-4 py-1.5"><DropdownCell value={z.impuesto} options={impuestoOptions} onChange={v => updateNationaleZeile(z.id,'impuesto',v)} /></td>
                 <td className="px-4 py-1.5 text-right font-mono text-slate-500 text-xs">{fmt(kosten)}</td>
