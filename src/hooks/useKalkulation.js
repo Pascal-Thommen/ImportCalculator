@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react'
 import { v4 as uuid } from 'uuid'
 import { makeDefaultImportacionZeilen, makeDefaultNationaleZeilen, makeDefaultFleteZeilen, makeDefaultProduktZeilen } from '../data/defaultRows.js'
-import { makeBeispiel1, makeBeispiel2, makeBeispielTaller1 } from '../data/exampleKalkulationen.js'
+import { makeEjMultipleProductos, makeEjercicio1 } from '../data/exampleKalkulationen.js'
 
-const VERLAUF_KEY = 'importkalk_verlauf_v2'
-const AKTIV_KEY   = 'importkalk_aktiv_v2'
+const VERLAUF_KEY = 'importkalk_verlauf_v3'
+const AKTIV_KEY   = 'importkalk_aktiv_v3'
 const SPRACHE_KEY = 'importkalk_sprache'
 
 function makeLeereKalkulation(nummer) {
@@ -23,7 +23,7 @@ function ladeVerlauf() {
     const raw = localStorage.getItem(VERLAUF_KEY)
     if (raw) return JSON.parse(raw)
   } catch { }
-  return [makeBeispiel1(), makeBeispiel2(), makeBeispielTaller1()]
+  return [makeEjMultipleProductos(), makeEjercicio1()]
 }
 
 function ladeAktivId(verlauf) {
