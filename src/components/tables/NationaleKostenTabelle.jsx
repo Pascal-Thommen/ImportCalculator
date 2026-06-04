@@ -7,7 +7,7 @@ export default function NationaleKostenTabelle({ kalk, t, handlers }) {
   const { updateNationaleZeile, addNationaleZeile, removeNationaleZeile } = handlers
   const { nationale, produkte } = kalk
   const zeilen = nationale.zeilen || []
-  const mehrere = (produkte.zeilen || []).length > 1
+  const mehrere = (produkte.zeilen||[]).length > 1
 
   const impuestoOptions = [
     { value: 'Exento', label: t.exento },
@@ -23,56 +23,60 @@ export default function NationaleKostenTabelle({ kalk, t, handlers }) {
   ]
 
   let totalKosten = 0, totalSteuern = 0
-  for (const z of zeilen) {
-    const { kosten, steuern } = splitBetrag(z.betrag || 0, z.impuesto || 'Exento')
-    totalKosten += kosten
-    totalSteuern += steuern
-  }
-
-  const fmt = n => new Intl.NumberFormat('es-PY', { minimumFractionDigits: 0, maximumFractionDigits: 0 }).format(Math.round(n))
+  zeilen.forEach(z => { const s = splitBetrag(z.betrag||0, z.impuesto||'Exento'); totalKosten += s.kosten; totalSteuern += s.steuern })
+  const fmt = n => new Intl.NumberFormat('es-PY',{minimumFractionDigits:0,maximumFractionDigits:0}).format(Math.round(n))
 
   return (
-    <section className="mb-6">
-      <div className="flex items-center gap-3 mb-3 pb-1 border-b-2 border-purple-500">
-        <h2 className="text-lg font-bold text-gray-800">{t.nationale}</h2>
-        <span className="text-sm text-gray-500">— Guaraníes (PYG)</span>
+    <section className="bg-white rounded-2xl shadow-sm border border-slate-200/60 overflow-hidden">
+      <div className="flex items-center gap-3 px-6 py-3.5 border-b border-slate-100 bg-gradient-to-r from-violet-50/70 to-transparent">
+        <div className="w-1.5 h-6 rounded-full bg-violet-500" />
+        <h2 className="font-bold text-slate-800">{t.nationale}</h2>
+        <span className="ml-1 text-xs text-slate-400 font-medium">— Guaraníes (PYG)</span>
       </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-sm border-collapse">
-          <thead>
-            <tr className="bg-gray-50 border-b border-gray-200">
-              <th className="text-left px-2 py-2 font-medium text-gray-600">{t.beschreibung}</th>
-              <th className="text-right px-2 py-2 font-medium text-gray-600">{t.betrag} (PYG)</th>
-              {mehrere && <th className="text-center px-2 py-2 font-medium text-gray-600">{t.aufteilung}</th>}
-              <th className="text-center px-2 py-2 font-medium text-gray-600">{t.impuesto}</th>
-              <th className="text-right px-2 py-2 font-medium text-gray-600">{t.kosten}</th>
-              <th className="text-right px-2 py-2 font-medium text-gray-600">{t.steuern}</th>
-              <th className="w-8"></th>
-            </tr>
-          </thead>
-          <tbody>
-            {zeilen.map(z => {
-              const { kosten, steuern } = splitBetrag(z.betrag || 0, z.impuesto || 'Exento')
-              return (
-                <tr key={z.id} className="border-b border-gray-100 hover:bg-gray-50">
-                  <td className="px-2 py-1"><EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id, 'beschreibung', v)} align="left" /></td>
-                  <td className="px-2 py-1"><EditableCell value={z.betrag} onChange={v => updateNationaleZeile(z.id, 'betrag', v)} type="number" /></td>
-                  {mehrere && <td className="px-2 py-1"><DropdownCell value={z.aufteilung} options={aufteilungOptions} onChange={v => updateNationaleZeile(z.id, 'aufteilung', v)} /></td>}
-                  <td className="px-2 py-1"><DropdownCell value={z.impuesto} options={impuestoOptions} onChange={v => updateNationaleZeile(z.id, 'impuesto', v)} /></td>
-                  <td className="px-2 py-1 text-right font-mono text-gray-600 text-xs">{fmt(kosten)}</td>
-                  <td className="px-2 py-1 text-right font-mono text-gray-600 text-xs">{fmt(steuern)}</td>
-                  <td className="px-1"><button onClick={() => removeNationaleZeile(z.id)} className="text-red-400 hover:text-red-600 text-xs px-1 py-0.5 rounded hover:bg-red-50">✕</button></td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="bg-slate-50 border-b border-slate-100 text-xs font-semibold text-slate-400 uppercase tracking-wider">
+            <th className="text-left px-6 py-2.5">{t.beschreibung}</th>
+            <th className="text-right px-4 py-2.5 w-40">{t.betrag} (PYG)</th>
+            {mehrere && <th className="text-center px-4 py-2.5 w-36">{t.aufteilung}</th>}
+            <th className="text-center px-4 py-2.5 w-36">{t.impuesto}</th>
+            <th className="text-right px-4 py-2.5 w-36">{t.kosten}</th>
+            <th className="text-right px-4 py-2.5 w-32">{t.steuern}</th>
+            <th className="w-12" />
+          </tr>
+        </thead>
+        <tbody className="divide-y divide-slate-50">
+          {zeilen.map(z => {
+            const { kosten, steuern } = splitBetrag(z.betrag||0, z.impuesto||'Exento')
+            return (
+              <tr key={z.id} className="group hover:bg-violet-50/20 transition-colors">
+                <td className="px-4 py-1.5"><EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id,'beschreibung',v)} align="left" /></td>
+                <td className="px-4 py-1.5"><EditableCell value={z.betrag} onChange={v => updateNationaleZeile(z.id,'betrag',v)} type="number" /></td>
+                {mehrere && <td className="px-4 py-1.5"><DropdownCell value={z.aufteilung} options={aufteilungOptions} onChange={v => updateNationaleZeile(z.id,'aufteilung',v)} /></td>}
+                <td className="px-4 py-1.5"><DropdownCell value={z.impuesto} options={impuestoOptions} onChange={v => updateNationaleZeile(z.id,'impuesto',v)} /></td>
+                <td className="px-4 py-1.5 text-right font-mono text-slate-500 text-xs">{fmt(kosten)}</td>
+                <td className="px-4 py-1.5 text-right font-mono text-slate-500 text-xs">{fmt(steuern)}</td>
+                <td className="px-2">
+                  <button onClick={() => removeNationaleZeile(z.id)}
+                    className="opacity-0 group-hover:opacity-100 w-7 h-7 flex items-center justify-center mx-auto rounded-md text-slate-400 hover:text-red-500 hover:bg-red-50 transition-all text-xs">✕</button>
+                </td>
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+
+      <div className="px-6 py-2.5 border-t border-slate-100">
+        <button onClick={addNationaleZeile} className="text-xs font-semibold text-violet-600 hover:text-violet-700 flex items-center gap-1 transition-colors">
+          <span className="text-base leading-none">+</span>{t.zeile_hinzufuegen}
+        </button>
       </div>
-      <button onClick={addNationaleZeile} className="mt-2 text-sm text-blue-600 hover:text-blue-800 hover:underline">{t.zeile_hinzufuegen}</button>
-      <div className="flex flex-wrap gap-4 mt-3 p-3 bg-purple-50 rounded-lg border border-purple-100">
+
+      <div className="px-6 py-5 bg-gradient-to-r from-violet-50 to-purple-50/30 border-t border-violet-100 flex flex-wrap gap-10">
         <SummaryField label={`${t.kosten} (PYG)`} value={totalKosten} currency="PYG" />
         <SummaryField label={`${t.steuern} (PYG)`} value={totalSteuern} currency="PYG" />
-        <SummaryField label={`${t.total} (PYG)`} value={totalKosten + totalSteuern} currency="PYG" />
+        <SummaryField label={`${t.total} (PYG)`} value={totalKosten+totalSteuern} currency="PYG" />
       </div>
     </section>
   )
