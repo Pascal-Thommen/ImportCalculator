@@ -1,0 +1,7 @@
+version: '3.8'
+services:
+  importkalk-beta:
+    build: .
+    ports:
+      - "3001:80"
+    restart: unless-stopped
