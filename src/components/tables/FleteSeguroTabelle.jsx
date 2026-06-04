@@ -51,10 +51,7 @@ export default function FleteSeguroTabelle({ kalk, t, handlers }) {
           {zeilen.map(z => (
             <tr key={z.id} className={`group transition-colors ${z._auto === true ? 'bg-slate-50/60 hover:bg-emerald-50/30' : 'hover:bg-emerald-50/20'}`}>
               <td className="px-4 py-1.5">
-                <div className="flex items-center gap-1.5">
-                  {z._auto === true && <span className="text-slate-300 text-xs select-none" title={t.geschaetzt}>≈</span>}
-                  <EditableCell value={z.beschreibung} onChange={v => updateFleteZeile(z.id,'beschreibung',v)} align="left" />
-                </div>
+                <EditableCell value={z.beschreibung} onChange={v => updateFleteZeile(z.id,'beschreibung',v)} align="left" />
               </td>
               <td className="px-4 py-1.5">
                 <EditableCell

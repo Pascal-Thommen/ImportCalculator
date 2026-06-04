@@ -53,10 +53,7 @@ export default function NationaleKostenTabelle({ kalk, t, handlers }) {
             return (
               <tr key={z.id} className={`group transition-colors ${isAuto ? 'bg-slate-50/60 hover:bg-violet-50/30' : 'hover:bg-violet-50/20'}`}>
                 <td className="px-4 py-1.5">
-                  <div className="flex items-center gap-1.5">
-                    {isAuto && <span className="text-slate-300 text-xs select-none" title={t.geschaetzt}>≈</span>}
-                    <EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id,'beschreibung',v)} align="left" />
-                  </div>
+                  <EditableCell value={z.beschreibung} onChange={v => updateNationaleZeile(z.id,'beschreibung',v)} align="left" />
                 </td>
                 <td className="px-4 py-1.5">
                   <EditableCell

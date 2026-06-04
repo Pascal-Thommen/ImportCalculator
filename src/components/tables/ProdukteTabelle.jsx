@@ -1,5 +1,6 @@
 import EditableCell from '../ui/EditableCell.jsx'
 import SummaryField from '../ui/SummaryField.jsx'
+import HinweisePanel from '../ui/HinweisePanel.jsx'
 import { berechneZwischen } from '../../logic/berechnung.js'
 import { lookupHs } from '../../data/hsDatenbank.js'
 import { HERKUNFT_OPTIONEN } from '../../data/herkunftDaten.js'
@@ -149,9 +150,12 @@ export default function ProdukteTabelle({ kalk, t, handlers }) {
         </button>
       </div>
 
-      <div className="px-6 py-5 bg-gradient-to-r from-blue-50 to-indigo-50/30 border-t border-blue-100 flex flex-wrap gap-10">
-        <SummaryField label={`${t.fob} (${produkte.waehrung})`} value={fobW1} currency="USD" />
-        <SummaryField label={`${t.fob} (PYG)`} value={fobPYG} currency="PYG" />
+      <div className="px-6 py-5 bg-gradient-to-r from-blue-50 to-indigo-50/30 border-t border-blue-100 space-y-3">
+        <div className="flex flex-wrap gap-10">
+          <SummaryField label={`${t.fob} (${produkte.waehrung})`} value={fobW1} currency="USD" />
+          <SummaryField label={`${t.fob} (PYG)`} value={fobPYG} currency="PYG" />
+        </div>
+        <HinweisePanel kalk={kalk} t={t} />
       </div>
     </section>
   )
