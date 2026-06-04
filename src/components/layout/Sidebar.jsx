@@ -82,7 +82,7 @@ export default function Sidebar({ verlauf, aktivId, sprache, t, onSelect, onNeu,
         {eigene.length > 0 && (
           <div>
             <p className="px-2 py-2 text-xs font-semibold text-slate-500 uppercase tracking-wider">{t.verlauf}</p>
-            {eigene.map(k => renderItem(k, false))}
+            {eigene.slice().reverse().map(k => renderItem(k, false))}
           </div>
         )}
       </div>
