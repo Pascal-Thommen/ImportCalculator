@@ -62,7 +62,7 @@ export default function Sidebar({ verlauf, aktivId, sprache, t, onSelect, onNeu,
       {/* Logo */}
       <div className="px-4 pt-5 pb-4 border-b border-slate-800">
         <div className="flex items-center gap-2.5 mb-4">
-          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0">IK</div>
+          <div className="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center font-bold text-xs flex-shrink-0">IC</div>
           <span className="text-xs font-semibold text-slate-300 uppercase tracking-wide leading-tight">{t.app_titel}</span>
         </div>
         <button onClick={e => { e.stopPropagation(); onNeu() }}
